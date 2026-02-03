@@ -3,6 +3,8 @@ import random
 
 X_JITTER = 7    # left-right pixels
 Y_JITTER = 7    # up-down pixels
+WORD_SPACE = 12
+
 
 
 background = Image.open("background/background.jpeg").convert("RGB")
@@ -33,16 +35,24 @@ line_gap = 95  # the margin between lines
 #     draw.text((x, y), line, fill=(20, 20, 60), font=font)
 #     y += line_gap
 
-for line in lines:
-    x_offset = random.randint(-X_JITTER, X_JITTER)
-    y_offset = random.randint(-Y_JITTER, Y_JITTER)            # this for loop add human error while writing like writing under the line over the line etc
 
-    draw.text(
-        (x + x_offset, y + y_offset),
-        line,
-        fill=(20, 20, 60),  # dark blue ink
-        font=font
-    )
+for line in lines:         # this for loop add human error while writing like writing under the line over the line etc
+    current_x = x
+    words = line.split(" ")
+
+    for word in line.split(" "):
+        x_offset = random.randint(-X_JITTER, X_JITTER)
+        y_offset = random.randint(-Y_JITTER, Y_JITTER)
+
+        draw.text(
+            (current_x + x_offset, y + y_offset),
+            word,
+            fill=(20, 20, 60),
+            font=font
+        )
+
+        word_width = draw.textlength(word, font=font)
+        current_x += word_width + WORD_SPACE
 
     y += line_gap
 
